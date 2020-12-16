@@ -1,0 +1,11 @@
+{
+  "name": "pm2-zabbix",
+  "version": "1.0.0",
+  "description": "### Create file pm2-status.conf in /etc/zabbix/zabbix_agentd.conf.d $ sudo nano /etc/zabbix/zabbix_agentd.conf.d/pm2-status.conf ``` UserParameter=pm2.discovery,/usr/local/bin/node /etc/zabbix/script/pm2-zabbix/pm2.js UserParameter=pm2.status[*],/usr/local/bin/node /etc/zabbix/script/pm2-zabbix/pm2.js $1 ```",
+  "main": "pm2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fillipi Nascimento",
+  "license": "ISC"
+}
