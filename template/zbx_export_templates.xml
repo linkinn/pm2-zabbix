@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2020-12-17T13:52:46Z</date>
+    <groups>
+        <group>
+            <name>Pm2</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>PM2</template>
+            <name>Pm2 status</name>
+            <description>Verificar disponibilidade dos serviços que estão no PM2</description>
+            <groups>
+                <group>
+                    <name>Pm2</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>pm2</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Pm2 Status Auto Dicovery</name>
+                    <key>pm2.discovery</key>
+                    <lifetime>10d</lifetime>
+                    <description>Service name {$NAME}</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Status of {#NAME}</name>
+                            <key>pm2.status[{#NAME}]</key>
+                            <history>10d</history>
+                            <trends>100d</trends>
+                            <applications>
+                                <application>
+                                    <name>pm2</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>Pm2 STATUS</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{count(#3,2,eq)}</expression>
+                                    <name>PM2 Service: {#NAME} is errored</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{count(#3,3,eq)}</expression>
+                                    <name>PM2 Service: {#NAME} is fatal error</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{count(#3,0,eq)}</expression>
+                                    <name>PM2 Service: {#NAME} is stopped</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+    <value_maps>
+        <value_map>
+            <name>Pm2 STATUS</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>stopped</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>online</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>errored</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>fatal error</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
